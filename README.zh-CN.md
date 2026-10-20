@@ -1,12 +1,22 @@
 # Software Rebuild Codex
 
-[English](README.md) · MIT · **0.1.0-alpha.1** · 本地执行 · Node.js 22.12+
+[English](README.md) · MIT · **0.2.0-alpha.1** · 本地执行 · Node.js 22.12+
 
 面向 Codex 的软件理解与独立复刻插件：围绕某个具体功能，收集实现证据、整理功能规格、在你的项目中独立实现，再对照行为验证。采用统一编排与 REA、Reverse-skill、PentAGI 三个独立适配器。
 
 **当前是 alpha。** REA 已完成真实 MCP 握手和工具发现；Reverse-skill 已运行真实三平台路由。PentAGI 当前提供只读 flow API 适配，自动任务启动保持阻断，直到具备可强制执行的隔离、预算及停止控制。桌面、Web、Android 已有作用域、工作流及行为示例，但尚未完成原生 GUI、真实浏览器和 Android 设备的整体验收。
 
 ## 使用
+
+0.2 新增[十种 Harness 配置与技能适配、Aider CLI 工作流](docs/harnesses.md)，包括 Hermes Agent。导出器只创建新目录，不修改日常配置。固定版本的 [TodoMVC、ShareX、Markor 功能对照](benchmarks/README.md)已在本地完成 715/715 项；这是功能切片验证，完整 GUI、浏览器 DOM、Android 设备仍未验收。
+
+修改 `examples/harness-export.example.json` 中的绝对路径后执行：
+
+```powershell
+node bin/software-rebuild.mjs harness_export D:/RebuildWork/export-request.json
+```
+
+按各导出目录的 INSTALL.md 合并配置。Claude Code、Gemini CLI 已用隔离配置连接成功；Hermes 原生 MCP 模块发现 10 个工具并调用 doctor 成功。其余客户端和完整模型交互未实测，详见兼容矩阵。
 
 ```powershell
 git clone https://github.com/yurongfu-01/software-rebuild-codex.git

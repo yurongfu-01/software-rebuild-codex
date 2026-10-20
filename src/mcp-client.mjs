@@ -1,5 +1,6 @@
 import { startProcess, terminateTree } from './process.mjs';
 import { RebuildError, requireThat } from './errors.mjs';
+import { VERSION } from './version.mjs';
 
 export class McpClient {
   constructor(config) { this.config = config; this.pending = new Map(); this.nextId = 1; this.buffer = ''; this.bytes = 0; this.closed = false; }
@@ -15,7 +16,7 @@ export class McpClient {
     this.child.on('error', () => this.fail(new RebuildError('UNAVAILABLE', 'MCP executable unavailable')));
     this.child.on('close', () => this.fail(new RebuildError('PROCESS', 'MCP process closed')));
     this.child.stdin.on('error', () => this.fail(new RebuildError('PROCESS', 'MCP input closed')));
-    const hello = await this.request('initialize', { protocolVersion: '2024-11-05', capabilities: {}, clientInfo: { name: 'software-rebuild-codex', version: '0.1.0-alpha.1' } });
+    const hello = await this.request('initialize', { protocolVersion: '2024-11-05', capabilities: {}, clientInfo: { name: 'software-rebuild-codex', version: VERSION } });
     requireThat(['2024-11-05', '2025-03-26', '2025-06-18', '2025-11-25'].includes(hello?.protocolVersion) && hello?.serverInfo, 'PROTOCOL', 'Unsupported MCP initialize response');
     this.notify('notifications/initialized'); return hello;
   }

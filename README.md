@@ -1,6 +1,6 @@
 # Software Rebuild Codex
 
-[简体中文](README.zh-CN.md) · MIT · **0.1.0-alpha.1** · Local execution · Node.js 22.12+
+[简体中文](README.zh-CN.md) · MIT · **0.2.0-alpha.1** · Local execution · Node.js 22.12+
 
 A Codex plugin for understanding a specific software feature from evidence, writing an independent specification, implementing it in your project, and comparing behavior. It coordinates **REA**, **reverse-skill**, and **PentAGI** through separate adapters.
 
@@ -18,6 +18,8 @@ A Codex plugin for understanding a specific software feature from evidence, writ
 The plugin does not bundle upstream tools or install them automatically. Codex writes the independent implementation; this package provides controlled tool connections, workflow and evidence management.
 
 ## Quick start
+
+New in 0.2: [ten Harness profiles plus Aider CLI](docs/harnesses.md), including Hermes Agent, exported into a new directory without changing user settings. [Pinned OSS benchmarks](benchmarks/README.md) compare TodoMVC, ShareX and Markor source slices with independent implementations: 715/715 local comparisons passed. These are domain-function tests, not full GUI/device acceptance.
 
 ```powershell
 git clone https://github.com/yurongfu-01/software-rebuild-codex.git

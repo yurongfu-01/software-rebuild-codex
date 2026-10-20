@@ -1,17 +1,18 @@
 {
   "name": "software-rebuild-codex",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha.1",
   "description": "Evidence-based software understanding and reimplementation orchestration for Codex",
   "type": "module",
   "license": "MIT",
   "engines": { "node": ">=22.12.0" },
   "bin": { "software-rebuild": "bin/software-rebuild.mjs" },
   "scripts": {
-    "test": "node --test test/*.test.mjs",
+    "test": "node --test test/*.test.mjs benchmarks/*.test.mjs",
+    "bench:oss": "node scripts/bench-oss.mjs",
     "check": "node scripts/check.mjs",
     "doctor": "node bin/software-rebuild.mjs doctor",
     "demo": "node examples/behavior-comparison.mjs"
   },
-  "files": ["src/", "bin/", "skills/", ".agents/plugins/marketplace.json", ".codex-plugin/", ".mcp.json", "examples/", "docs/", "README.md", "README.zh-CN.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
+  "files": ["src/", "bin/", "skills/", "benchmarks/", "scripts/bench-oss.mjs", ".agents/plugins/marketplace.json", ".codex-plugin/", ".mcp.json", "examples/", "docs/", "README.md", "README.zh-CN.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
   "repository": { "type": "git", "url": "https://github.com/yurongfu-01/software-rebuild-codex.git" }
 }

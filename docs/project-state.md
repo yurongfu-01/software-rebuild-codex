@@ -1,14 +1,14 @@
 # Project state
 
-Version: 4. Updated: 2026-10-20. Owner: primary implementer; user is repository owner and future operator.
+Version: 5. Updated: 2026-10-20. Owner: primary implementer; user is repository owner and future operator.
 
-Phase: reviewed alpha source publicly published; final local suite 24/24, isolated skill forward-test 157/157, clean ZIP installation and installed-cache MCP execution passed. Full product runtime acceptance remains incomplete as listed below.
+Phase: 0.2.0-alpha.1 reviewed update prepared for authorized public publication. Default local suite 33 passed / 1 optional integration skipped; separate real-source suite 6/6; pinned original comparisons 715/715. Earlier 0.1 installation/skill evidence remains historical, not a new-version installation claim.
 
 Confirmed requirements: three adapters under unified orchestration; desktop/Web/Android workflow coverage; MIT; public repository yurongfu-01/software-rebuild-codex. User explicitly authorized continuous planning, development, testing and public publication.
 
-Implemented: scoped cases, evidence integrity/provenance, concurrent-writer locks, CLI/MCP, retained REA case sessions, upstream router, read-only HTTPS PentAGI flows, Windows Job Object cleanup, Codex skill and marketplace, self-owned examples, CI and documentation.
+Implemented: scoped cases, evidence integrity/provenance, concurrent-writer locks, CLI/MCP, retained REA case sessions, upstream router, read-only HTTPS PentAGI flows, Windows Job Object cleanup, Codex skill and marketplace. New: ten Harness profile/skill exports plus Aider CLI fallback, pinned TodoMVC/ShareX/Markor local original comparisons. User explicitly confirmed this scope and publication, including Hermes. Native Claude/Gemini connections and Hermes discovery/doctor passed in isolated profiles; no paid model calls or daily config changes.
 
-Evidence: [validation](validation.md), [upstream contracts](upstreams.md), [implementation plan](implementation-plan.md), [operations](operations.md). Source design baseline: [design](design.md).
+Evidence: [0.2 validation](validation-0.2.md), [Harness matrix](harnesses.md), [approved extension plan](harness-oss-plan.md), [benchmark reproduction](../benchmarks/README.md), [previous validation](validation.md), [upstream contracts](upstreams.md), [operations](operations.md). Source design baseline: [design](design.md).
 
 Acceptance limitations: live PentAGI not deployed; active scans blocked; actual native GUI/browser/Android-device reconstruction not run; existing account/chat plugin activation not attempted. These remain explicit limitations, not silent passes.
 

@@ -1,0 +1,6 @@
+{
+  "harness": "all",
+  "pluginRoot": "D:/Tools/software-rebuild-codex",
+  "hostConfig": "D:/RebuildWork/config.local.json",
+  "outputRoot": "D:/RebuildWork/new-harness-export"
+}

@@ -1,6 +1,6 @@
 {
   "name": "software-rebuild-codex",
-  "version": "0.1.0-alpha.1",
+  "version": "0.2.0-alpha.1",
   "description": "Understand software features from evidence and guide independent reimplementation across desktop, Web and Android.",
   "author": { "name": "yurongfu-01" },
   "repository": "https://github.com/yurongfu-01/software-rebuild-codex",

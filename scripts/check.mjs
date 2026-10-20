@@ -10,7 +10,7 @@ async function files(dir) {
   }
   return result;
 }
-const modules = (await Promise.all(['src', 'bin', 'scripts', 'examples', 'test'].map(files))).flat().filter(p => p.endsWith('.mjs'));
+const modules = (await Promise.all(['src', 'bin', 'scripts', 'examples', 'test', 'benchmarks'].map(files))).flat().filter(p => p.endsWith('.mjs'));
 for (const file of modules) {
   const r = spawnSync(process.execPath, ['--check', file], { encoding: 'utf8', windowsHide: true });
   if (r.status !== 0) throw new Error(`Syntax check failed: ${file}\n${r.stderr || r.error}`);
