@@ -1,0 +1,9 @@
+node_modules/
+.work/
+cases/
+*.tgz
+*.zip
+.env
+.env.*
+config.local.json
+coverage/
