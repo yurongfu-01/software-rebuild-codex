@@ -1,0 +1,16 @@
+{
+  "name": "software-rebuild-codex",
+  "version": "0.1.0-alpha.1",
+  "description": "Understand software features from evidence and guide independent reimplementation across desktop, Web and Android.",
+  "author": { "name": "yurongfu-01" },
+  "repository": "https://github.com/yurongfu-01/software-rebuild-codex",
+  "license": "MIT",
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "requires_local_executor": true,
+  "interface": {
+    "displayName": "Software Rebuild",
+    "shortDescription": "理解软件功能，用证据指导独立复刻",
+    "longDescription": "Coordinate REA analysis, reverse-skill routing and a read-only PentAGI API adapter. Local configuration and explicit tool grants control execution. Alpha: autonomous PentAGI scans are blocked and platform runtime acceptance is reported separately."
+  }
+}

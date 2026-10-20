@@ -12,6 +12,6 @@
     "doctor": "node bin/software-rebuild.mjs doctor",
     "demo": "node examples/behavior-comparison.mjs"
   },
-  "files": ["src/", "bin/", "skills/", ".codex-plugin/", ".mcp.json", "examples/", "docs/", "README.md", "README.zh-CN.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
+  "files": ["src/", "bin/", "skills/", ".agents/plugins/marketplace.json", ".codex-plugin/", ".mcp.json", "examples/", "docs/", "README.md", "README.zh-CN.md", "LICENSE", "THIRD_PARTY_NOTICES.md"],
   "repository": { "type": "git", "url": "https://github.com/yurongfu-01/software-rebuild-codex.git" }
 }

@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "software_rebuild": {
+      "type": "stdio",
+      "command": "node",
+      "args": ["${PLUGIN_ROOT}/bin/software-rebuild.mjs", "serve"],
+      "cwd": "${PLUGIN_ROOT}"
+    }
+  }
+}

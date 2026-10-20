@@ -20,21 +20,24 @@ export class McpClient {
     this.notify('notifications/initialized'); return hello;
   }
   receive(data) {
-    this.bytes += Buffer.byteLength(data); this.buffer += data;
-    if (this.bytes > (this.config.maxBytes || 1024 * 1024)) { void this.fail(new RebuildError('LIMIT', 'MCP output exceeded limit')); return; }
+    this.buffer += data;
     let index;
     while ((index = this.buffer.indexOf('\n')) >= 0) {
-      const line = this.buffer.slice(0, index).trim(); this.buffer = this.buffer.slice(index + 1); if (!line) continue;
+      const line = this.buffer.slice(0, index).trim(); this.buffer = this.buffer.slice(index + 1);
+      if (Buffer.byteLength(line) > (this.config.maxBytes || 1024 * 1024)) { void this.fail(new RebuildError('LIMIT', 'MCP frame exceeded limit')); return; }
+      if (!line) continue;
       let m; try { m = JSON.parse(line); } catch { void this.fail(new RebuildError('PROTOCOL', 'Invalid MCP JSON')); return; }
-      if (m.jsonrpc !== '2.0') { void this.fail(new RebuildError('PROTOCOL', 'Invalid MCP frame')); return; }
+      if (!m || typeof m !== 'object' || Array.isArray(m) || m.jsonrpc !== '2.0') { void this.fail(new RebuildError('PROTOCOL', 'Invalid MCP frame')); return; }
       if (m.method) {
         if (m.id !== undefined) this.child.stdin.write(JSON.stringify({ jsonrpc: '2.0', id: m.id, ...(m.method === 'ping' ? { result: {} } : { error: { code: -32601, message: 'Client capability not supported' } }) }) + '\n');
         continue;
       }
       const p = this.pending.get(m.id); if (!p) continue;
+      if (Object.hasOwn(m, 'error') === Object.hasOwn(m, 'result') || (Object.hasOwn(m, 'error') && (!m.error || typeof m.error !== 'object'))) { void this.fail(new RebuildError('PROTOCOL', 'Invalid MCP response envelope')); return; }
       this.pending.delete(m.id); clearTimeout(p.timer);
       if (m.error) p.reject(new RebuildError('UPSTREAM', 'MCP request returned an error')); else p.resolve(m.result);
     }
+    if (Buffer.byteLength(this.buffer) > (this.config.maxBytes || 1024 * 1024)) void this.fail(new RebuildError('LIMIT', 'MCP unterminated frame exceeded limit'));
   }
   notify(method, params) { if (!this.closed) this.child.stdin.write(JSON.stringify({ jsonrpc: '2.0', method, ...(params ? { params } : {}) }) + '\n'); }
   request(method, params = {}) {
@@ -47,9 +50,10 @@ export class McpClient {
     });
   }
   async fail(error) {
+    if (this.closed) return this.termination;
     this.closed = true;
     for (const p of this.pending.values()) { clearTimeout(p.timer); p.reject(error); } this.pending.clear();
-    await terminateTree(this.child);
+    this.termination = terminateTree(this.child); await this.termination;
   }
   async close() { await this.fail(new RebuildError('CANCELLED', 'MCP client closed')); }
 }

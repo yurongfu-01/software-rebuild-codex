@@ -1,0 +1,10 @@
+{
+  "platform": "android",
+  "feature": "Understand and independently implement the owned app's export naming feature",
+  "target": "D:/OwnedSoftware/owned-app.apk",
+  "readRoots": ["D:/OwnedSoftware"],
+  "writeRoots": ["D:/RebuildWork/output"],
+  "networkTargets": [],
+  "authorization": "Owner permits static analysis of this APK and implementation in the output project; no device execution or network tests.",
+  "expiresAt": "2099-01-01T00:00:00Z"
+}

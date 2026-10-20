@@ -1,0 +1,24 @@
+{
+  "caseRoot": "D:/RebuildWork/cases",
+  "readRoots": ["D:/OwnedSoftware"],
+  "writeRoots": ["D:/RebuildWork/output"],
+  "rea": {
+    "command": "node",
+    "args": ["D:/Tools/rea/node_modules/rea-agents/scripts/rea.mjs", "mcp"],
+    "cwd": "D:/RebuildWork",
+    "timeoutMs": 30000,
+    "maxBytes": 4194304,
+    "grants": []
+  },
+  "reverseSkill": {
+    "root": "D:/Tools/reverse-skill",
+    "workRoot": "D:/RebuildWork/routing",
+    "timeoutMs": 30000
+  },
+  "pentagi": {
+    "baseUrl": "https://localhost:8443",
+    "tokenEnv": "PENTAGI_API_TOKEN",
+    "timeoutMs": 15000,
+    "maxBytes": 1048576
+  }
+}

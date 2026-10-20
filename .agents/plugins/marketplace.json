@@ -1,0 +1,12 @@
+{
+  "name": "software-rebuild",
+  "interface": { "displayName": "Software Rebuild Codex" },
+  "plugins": [
+    {
+      "name": "software-rebuild-codex",
+      "source": { "source": "local", "path": "./" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

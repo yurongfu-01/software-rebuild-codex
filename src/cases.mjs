@@ -9,6 +9,24 @@ const kinds = { analyzed: 'analysis', specified: 'specification', rebuilt: 'impl
 const digest = s => createHash('sha256').update(s).digest('hex');
 export class CaseStore {
   constructor(root, policy = {}, secrets = []) { this.root = path.resolve(root); this.policy = policy; this.secrets = secrets; }
+  async locked(id, action) {
+    const lock = await this.location(id, '.lock'); const started = Date.now();
+    for (;;) {
+      try { await fs.mkdir(lock); break; }
+      catch (e) {
+        if (e.code !== 'EEXIST') throw e;
+        requireThat(Date.now() - started < 5000, 'BUSY', 'Case is locked by another writer; inspect owner before removing a stale lock');
+        await new Promise(resolve => setTimeout(resolve, 20));
+      }
+    }
+    try {
+      await fs.writeFile(path.join(lock, 'owner.json'), JSON.stringify({ pid: process.pid, at: new Date().toISOString() }), { flag: 'wx' });
+      return await action();
+    } finally {
+      await this.location(id, '.lock');
+      await fs.unlink(path.join(lock, 'owner.json')).catch(() => {}); await fs.rmdir(lock);
+    }
+  }
   async location(id, ...parts) {
     requireThat(/^[a-f0-9-]{36}$/.test(id), 'INPUT', 'Invalid case ID');
     const candidate = path.join(this.root, id, ...parts);
@@ -40,7 +58,7 @@ export class CaseStore {
     return c;
   }
   async save(c, event) {
-    // Service serializes mutations. Never run two server instances on the same case root.
+    // The caller holds a cross-process per-case directory lock through this update.
     const state = await this.location(c.id, 'case.json'); const events = await this.location(c.id, 'events.jsonl');
     const temp = await this.location(c.id, `${randomUUID()}.tmp`);
     await fs.writeFile(temp, JSON.stringify(c, null, 2), { flag: 'wx' });
@@ -48,13 +66,17 @@ export class CaseStore {
     finally { await fs.rm(temp, { force: true }); }
   }
   async evidence(id, input) {
+    return this.locked(id, () => this.addEvidence(id, input));
+  }
+  async addEvidence(id, input) {
     const c = await this.read(id);
+    requireThat(c.stage !== 'verified', 'STAGE', 'Finalized case is immutable; start a new case for a new run');
     requireThat(Object.values(kinds).includes(input?.kind), 'INPUT', 'Invalid evidence kind');
     requireThat(['fact', 'inference'].includes(input.classification), 'INPUT', 'Evidence classification required');
     text(input.content, 'content', 200000); text(input.source, 'source', 1000);
     if (input.kind === 'verification') {
       let v; try { v = JSON.parse(input.content); } catch { requireThat(false, 'INPUT', 'Verification must be JSON'); }
-      requireThat(v?.mode === 'reported' && Array.isArray(v.checks) && v.checks.length > 0 && v.checks.length <= 100 && v.checks.every(x => typeof x.name === 'string' && x.name.trim() && ['passed', 'failed', 'not_run'].includes(x.status) && Object.hasOwn(x, 'expected') && Object.hasOwn(x, 'actual')), 'INPUT', 'Verification requires nonempty reported checks with expected and actual results');
+      requireThat(v?.mode === 'reported' && Array.isArray(v.checks) && v.checks.length > 0 && v.checks.length <= 100 && v.checks.every(x => x && typeof x === 'object' && typeof x.name === 'string' && x.name.trim() && ['passed', 'failed', 'not_run'].includes(x.status) && Object.hasOwn(x, 'expected') && Object.hasOwn(x, 'actual')), 'INPUT', 'Verification requires 1-100 reported checks with names, statuses, expected and actual results; split larger runs into evidence batches');
     }
     const e = { id: randomUUID(), kind: input.kind, classification: input.classification, source: redact(input.source, this.secrets), content: redact(input.content, this.secrets), provenance: 'operator_supplied', at: new Date().toISOString(), tool: input.tool ? text(input.tool, 'tool', 200) : 'operator', toolVersion: input.toolVersion ? text(input.toolVersion, 'toolVersion', 100) : 'unspecified' };
     const body = JSON.stringify(redact(e, this.secrets), null, 2);
@@ -70,6 +92,9 @@ export class CaseStore {
     return JSON.parse(body);
   }
   async advance(id, stage, artifact = {}) {
+    return this.locked(id, () => this.doAdvance(id, stage, artifact));
+  }
+  async doAdvance(id, stage, artifact = {}) {
     const c = await this.read(id);
     requireThat(stages.indexOf(stage) === stages.indexOf(c.stage) + 1, 'STAGE', 'Stages must advance in order');
     if (stage === 'routed') requireThat(artifact?.platform === c.scope.platform && typeof artifact.method === 'string' && artifact.method.trim(), 'INPUT', 'Route artifact required');
@@ -85,9 +110,15 @@ export class CaseStore {
     await this.save(c, { stage }); return c;
   }
   async report(id) {
+    return this.locked(id, () => this.doReport(id));
+  }
+  async doReport(id) {
     const c = await this.read(id);
     const records = await Promise.all(c.evidence.map(x => this.loadEvidence(c, x.id)));
-    const v = records.filter(x => x.kind === 'verification').at(-1);
-    return redact({ ...c, records, verification: v ? JSON.parse(v.content) : { mode: 'not_run' }, assurance: 'Evidence and verification are operator-supplied, not independently certified by this plugin.' }, this.secrets);
+    const finalizedIds = c.transitions.findLast(x => x.stage === 'verified')?.artifact.evidenceIds;
+    const selected = records.filter(x => x.kind === 'verification' && (!finalizedIds || finalizedIds.includes(x.id)));
+    const batches = selected.map(x => JSON.parse(x.content));
+    const verification = batches.length ? { mode: 'reported', finalized: c.stage === 'verified', evidenceIds: selected.map(x => x.id), checks: batches.flatMap(x => x.checks) } : { mode: 'not_run' };
+    return redact({ ...c, records, verification, assurance: 'Evidence and verification are operator-supplied, not independently certified by this plugin.' }, this.secrets);
   }
 }
