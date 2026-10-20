@@ -75,8 +75,8 @@
 - [x] Provide self-owned desktop/Web/Android sample functional specs and a runnable Node behavioral comparison, clearly distinct from device/GUI integration.
 - [x] Run `npm test`, `npm run check`, `npm pack --dry-run` and archive packaging inspection. Separate mock contracts, actual local runtime and missing upstream/device runs.
 - [x] Dispatch read-only independent reviewer as required by requesting-code-review; fix important findings with reproducing tests; rerun suite.
-- [ ] Inspect staged files/history for secrets, user data and unrelated assets. Use noreply Git identity for this repository.
-- [ ] Verify target account/repository, publish reviewed source publicly and verify remote commit and visibility. If credentials fail, preserve completed deliverables and specify the exact remaining login action.
+- [x] Inspect staged files/history for secrets, user data and unrelated assets. Use noreply Git identity for this repository.
+- [x] Verify target account/repository, publish reviewed source publicly and verify remote commit and visibility. If credentials fail, preserve completed deliverables and specify the exact remaining login action.
 
 ## Decisions and evidence ledger
 
@@ -91,3 +91,4 @@
 - Ruling: Windows uses Job Objects; POSIX uses cooperative process groups, not a hostile-code sandbox. Cost if wrongly assumed stronger: escaped tool side effects. Documentation explicitly requires OS isolation for untrusted code.
 - Ruling: public distribution is an alpha with blocked active PentAGI execution and unrun GUI/browser/device acceptance. Cost: it cannot claim the complete autonomous security/replication capability; limitations are visible in READMEs and validation.
 - Ruling: specs and verification are typed immutable evidence rather than separate authoritative loose files. Cost: consumers use the report/evidence API instead of editing spec.md directly.
+- Publication checkpoint: target account verified through Git Credential Manager without printing or persisting token values. Public main commit 34a733c confirmed remotely; repository identified MIT. Full source ZIP 44 files, excluded-data violations 0. Clean ZIP installed into independent CODEX_HOME, then installed-cache MCP initialize/tools/list/doctor passed (10 tools).

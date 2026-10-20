@@ -8,6 +8,8 @@ Package `rea-agents@6.7.0` exposes `scripts/rea.mjs mcp`. It was installed in an
 
 Source reference: [package manifest](https://github.com/morluto/rea/blob/d98fc3859dbb9fc210b13ba766c447324935132d/package.json).
 
+An exact-granted real `binary_session` call succeeded. A self-owned C# fixture was compiled to a PE/CLI DLL without executing it; `open_binary` recognized PE/x86 and selected it, and the next `binary_session` in the same adapter session returned `open: true`. This confirms the stateful transport path, not deep decompilation or behavioral reconstruction of a desktop application.
+
 Case sessions are preserved in MCP server mode. Exact grants constrain calls; they are not an OS sandbox. Optional native tools remain separately provisioned. A successful tool listing does not establish every listed backend is installed or every analysis tool works.
 
 ## reverse-skill

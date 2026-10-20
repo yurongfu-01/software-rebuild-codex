@@ -19,6 +19,7 @@ Date: 2026-10-20. This record distinguishes actual observations from fixture tes
 | Real REA state across tools | open_binary selected a self-owned compiled .NET PE; subsequent binary_session reported open:true | Deep decompilation, GUI execution or APK analysis |
 | Real reverse-skill router | Desktop R5 high; Android R1 high; generic Web hint R0 low fallback; all exit 0 | Complete or precise Web feature understanding |
 | Plugin installation in isolated CODEX_HOME | CLI marketplace add and plugin add returned software-rebuild-codex@software-rebuild, version 0.1.0-alpha.1, installed cache path | Activation in the user's current account/chat |
+| Clean committed-source ZIP install and runtime | Extracted into a new directory, installed into another isolated CODEX_HOME; installed-cache server initialized, listed 10 tools and executed doctor | Existing-account activation or live upstream availability in that clean configuration |
 | Official skill format validator | Skill is valid | Behavioral quality on its own |
 | Self-owned end-to-end cases | 5/5 checks each for Node, real loopback HTTP, JDK domain logic; stages reached reported verified | Native desktop GUI, browser, Android device or APK installation |
 
